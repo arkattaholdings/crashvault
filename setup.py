@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name="crashvault",
@@ -14,9 +14,10 @@ setup(
         "Issues": "https://github.com/creeperkid2014/crashvault/issues",
     },
     python_requires=">=3.8",
-    py_modules=["crashvault"],
+    packages=find_packages(include=["crashvault", "crashvault.*"]),
+    py_modules=[],
     install_requires=["click>=8"],
-    entry_points={"console_scripts": ["crashvault=crashvault:cli"]},
+    entry_points={"console_scripts": ["crashvault=crashvault.cli:cli"]},
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
