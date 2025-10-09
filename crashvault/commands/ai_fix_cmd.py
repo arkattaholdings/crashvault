@@ -1,5 +1,5 @@
 import click, json, subprocess, shutil
-from ..core import EVENTS_DIR, get_config_value
+from ..core import EVENTS_DIR, get_ai_config
 
 
 PROMPT_TMPL = """
@@ -40,17 +40,24 @@ def ai_fix(event_id, model):
             contexts.append(f"{path} (line {line})\n{ctx}")
     code_context = "\n\n".join(contexts) if contexts else "(no source context)"
 
-    model = model or get_config_value("ollama_model", "qwen2.5-coder:7b")
-    if not shutil.which("ollama"):
-        raise click.ClickException("ollama CLI not found. Install Ollama or update PATH.")
-
-    prompt = PROMPT_TMPL.format(event_json=json.dumps(ev, indent=2), code_context=code_context)
-    try:
-        result = subprocess.run(["ollama", "run", model], input=prompt.encode("utf-8"), capture_output=True)
-    except Exception as e:
-        raise click.ClickException(str(e))
-    if result.returncode != 0:
-        raise click.ClickException(result.stderr.decode("utf-8", errors="ignore"))
-    click.echo(result.stdout.decode("utf-8", errors="ignore"))
+    ai_config = get_ai_config()
+    model = model or ai_config.get("model", "qwen2.5-coder:7b")
+    provider = ai_config.get("provider", "ollama")
+    
+    if provider == "ollama":
+        if not shutil.which("ollama"):
+            raise click.ClickException("ollama CLI not found. Install Ollama or update PATH.")
+        
+        prompt = PROMPT_TMPL.format(event_json=json.dumps(ev, indent=2), code_context=code_context)
+        try:
+            result = subprocess.run(["ollama", "run", model], input=prompt.encode("utf-8"), capture_output=True)
+        except Exception as e:
+            raise click.ClickException(str(e))
+        if result.returncode != 0:
+            raise click.ClickException(result.stderr.decode("utf-8", errors="ignore"))
+        click.echo(result.stdout.decode("utf-8", errors="ignore"))
+    else:
+        click.echo(f"AI provider '{provider}' not yet implemented. Please use 'ollama' for now.")
+        click.echo("Edit ~/.crashvault/config.json to change AI settings.")
 
 

@@ -11,6 +11,19 @@ pip install -e .
 
 Once installed, the `crashvault` command is available.
 
+### First-time setup
+
+After installation, run the setup command to initialize your configuration:
+```
+crashvault setup
+```
+
+This creates `~/.crashvault/config.json` with default settings for:
+- User information (name, email, team)
+- AI provider settings (Ollama, OpenAI, Anthropic)
+- Notification preferences
+- Storage configuration
+
 ## Commands
 
 ```
@@ -121,7 +134,7 @@ crashvault autolog
 crashvault diagnose <EVENT_ID>
 ```
 
-- Ask a local Ollama model for a fix suggestion (configure model via `crashvault config set ollama_model "qwen2.5-coder:7b"`):
+- Ask a local Ollama model for a fix suggestion (configure model in `~/.crashvault/config.json`):
 ```
 crashvault ai-fix <EVENT_ID> --model qwen2.5-coder:7b
 ```

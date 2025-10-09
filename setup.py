@@ -1,4 +1,20 @@
 from setuptools import setup, find_packages
+from setuptools.command.install import install
+import subprocess
+import sys
+
+
+class PostInstallCommand(install):
+    """Post-installation for installation mode."""
+    def run(self):
+        install.run(self)
+        # Run the config creation hook
+        try:
+            from crashvault.install_hook import create_user_config
+            create_user_config()
+        except Exception as e:
+            print(f"Warning: Could not create user config: {e}")
+
 
 setup(
     name="crashvault",
@@ -26,4 +42,7 @@ setup(
         "Intended Audience :: Developers",
     ],
     include_package_data=True,
+    cmdclass={
+        'install': PostInstallCommand,
+    },
 )
