@@ -30,6 +30,7 @@ from .commands.diagnose_cmd import diagnose
 from .commands.ai_fix_cmd import ai_fix
 from .commands.notify_cmd import notify
 from .commands.test_cmd import test_cmd
+from .commands.setup_cmd import setup_cmd
 
 
 @click.group()
@@ -70,6 +71,7 @@ cli.add_command(diagnose)
 cli.add_command(ai_fix)
 cli.add_command(notify)
 cli.add_command(test_cmd, name="test")
+cli.add_command(setup_cmd)
 
 # aliases
 cli.add_command(ls, name="ls")
