@@ -26,14 +26,10 @@ from .commands.report_cmd import report
 from .commands.attach_cmd import attach
 from .commands.wrap_cmd import wrap
 from .commands.autolog_cmd import autolog
-from .commands.auto_debug_cmd import auto_debug
 from .commands.diagnose_cmd import diagnose
-from .commands.ai_fix_cmd import ai_fix
 from .commands.notify_cmd import notify
 from .commands.test_cmd import test_cmd
 from .commands.setup_cmd import setup_cmd
-from .commands.code_review_cmd import code_review
-from .commands.batch_analyze_cmd import batch_analyze
 from .commands.generate_report_cmd import generate_report
 
 
@@ -71,14 +67,10 @@ cli.add_command(report)
 cli.add_command(attach)
 cli.add_command(wrap)
 cli.add_command(autolog)
-cli.add_command(auto_debug)
 cli.add_command(diagnose)
-cli.add_command(ai_fix)
 cli.add_command(notify)
 cli.add_command(test_cmd, name="test")
 cli.add_command(setup_cmd)
-cli.add_command(code_review)
-cli.add_command(batch_analyze)
 cli.add_command(generate_report)
 
 # aliases
