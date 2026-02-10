@@ -31,6 +31,8 @@ from .commands.notify_cmd import notify
 from .commands.test_cmd import test_cmd
 from .commands.setup_cmd import setup_cmd
 from .commands.generate_report_cmd import generate_report
+from .commands.webhook_cmd import webhook
+from .commands.server_cmd import server
 
 
 @click.group()
@@ -72,6 +74,10 @@ cli.add_command(notify)
 cli.add_command(test_cmd, name="test")
 cli.add_command(setup_cmd)
 cli.add_command(generate_report)
+
+# webhook and server commands
+cli.add_command(webhook)
+cli.add_command(server)
 
 # aliases
 cli.add_command(ls, name="ls")
