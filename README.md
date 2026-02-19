@@ -2,6 +2,14 @@
 
 Crashvault is a lightweight, local-first crash/error vault with a simple CLI. Log errors, group them into issues, search, export/import, and keep a local history.
 
+## Contributing
+
+Contributions are welcome! Please read our [CONTRIBUTING.md](./CONTRIBUTING.md) guide for:
+- First-time contributor steps
+- Development setup instructions
+- Coding standards
+- Pull request process
+
 ## Install
 
 From source:
