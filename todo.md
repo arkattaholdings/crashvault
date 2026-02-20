@@ -17,6 +17,7 @@
 - [x] Add filtering options to wrap_cmd.py (by exit code, specific tags)
 - [ ] Implement batch operations for issue management
 - [ ] Add export/import for individual issues
+- [ ] Add CSV export format support
 - [ ] Create interactive TUI for browsing issues
 - [ ] Add support for custom severity levels
 - [ ] Implement issue deduplication based on stacktrace similarity
@@ -36,6 +37,9 @@
 - [ ] Add integration tests for server endpoints
 - [ ] Test batch analyze command functionality
 - [ ] Add test coverage for code review command
+- [ ] Add tests for `crashvault search` command
+- [ ] Add tests for `crashvault list` command with various filters
+- [ ] Add tests for `crashvault stats` command
 - [ ] Create end-to-end tests for CLI workflows
 - [ ] Add performance benchmarks for large event volumes
 
@@ -55,6 +59,7 @@
 
 ## Integrations
 - [ ] Slack/Discord bot for real-time error notifications
+- [ ] Add Microsoft Teams webhook provider
 - [ ] GitHub Issues auto-creation from crashvault events
 - [ ] Sentry-compatible event ingestion endpoint
 - [ ] PagerDuty/OpsGenie alert integration
