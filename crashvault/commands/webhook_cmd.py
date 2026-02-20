@@ -12,20 +12,22 @@ def webhook():
 
 
 @webhook.command(name="add")
-@click.argument("type", type=click.Choice(["slack", "discord", "http"]))
-@click.option("--url", required=True, help="Webhook URL")
+@click.argument("type", type=click.Choice(["slack", "discord", "http", "github"]))
+@click.option("--url", required=True, help="Webhook URL (GitHub: owner/repo or https://api.github.com/repos/owner/repo)")
 @click.option("--name", default=None, help="Friendly name for this webhook")
-@click.option("--secret", default=None, help="Secret for signing payloads (HTTP only)")
+@click.option("--secret", default=None, help="Secret for signing payloads (HTTP) or GitHub Personal Access Token")
 @click.option("--events", default=None, help="Comma-separated event levels to filter (e.g., 'error,critical')")
 def add(type, url, name, secret, events):
     """Add a new webhook.
 
-    TYPE is one of: slack, discord, http
+    TYPE is one of: slack, discord, http, github
 
     Examples:
         crashvault webhook add slack --url=https://hooks.slack.com/services/xxx
         crashvault webhook add discord --url=https://discord.com/api/webhooks/xxx
         crashvault webhook add http --url=https://myapp.com/webhook --secret=mysecret
+        crashvault webhook add github --url=owner/repo --secret=ghp_xxx
+        crashvault webhook add github --url=https://api.github.com/repos/owner/repo --secret=ghp_xxx --events=error,critical
     """
     # Import providers to register them
     from .. import webhooks  # noqa

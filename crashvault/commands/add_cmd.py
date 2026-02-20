@@ -24,6 +24,15 @@ def add(message, stack, level, tags, contexts):
             "status": "open",
             "created_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
         }
+        # Set severity based on level if not already set
+        level_to_severity = {
+            "debug": "low",
+            "info": "low", 
+            "warning": "medium",
+            "error": "high",
+            "critical": "critical"
+        }
+        issue["severity"] = level_to_severity.get(level.lower(), "medium")
         issues.append(issue)
         save_issues(issues)
         from ..rich_utils import get_console

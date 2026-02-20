@@ -5,6 +5,17 @@ from ..rich_utils import get_console
 console = get_console()
 
 
+def get_severity_style(severity):
+    """Get the Rich style for a severity level."""
+    severity_styles = {
+        "critical": "danger",
+        "high": "warning",
+        "medium": "primary", 
+        "low": "secondary"
+    }
+    return severity_styles.get(severity.lower(), "secondary")
+
+
 @click.command(name="list")
 @click.option("--status", type=click.Choice(["open", "resolved", "ignored"], case_sensitive=False), help="Filter by status")
 @click.option("--sort", type=click.Choice(["id", "title", "status", "created_at"], case_sensitive=False), default="id", show_default=True)
@@ -18,6 +29,8 @@ def list_cmd(status, sort, desc):
     for i in issues:
         issue_status = i['status']
         status_style = "success" if issue_status == "resolved" else "warning" if issue_status == "ignored" else "primary"
-        console.print(f"[highlight]#{i['id']}[/highlight] {i['title']} [{status_style}]({issue_status})[/{status_style}]")
+        severity = i.get("severity", "")
+        severity_display = f" [{get_severity_style(severity)}]({severity})[/]" if severity else ""
+        console.print(f"[highlight]#{i['id']}[/highlight] {i['title']} [{status_style}]({issue_status})[/{status_style}]{severity_display}")
 
 

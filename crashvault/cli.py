@@ -7,6 +7,7 @@ from .commands.show_cmd import show
 from .commands.kill_cmd import kill
 from .commands.resolve_cmd import resolve
 from .commands.set_status_cmd import set_status
+from .commands.set_severity_cmd import set_severity
 from .commands.reopen_cmd import reopen
 from .commands.set_title_cmd import set_title
 from .commands.purge_cmd import purge
@@ -35,7 +36,8 @@ from .commands.generate_report_cmd import generate_report
 from .commands.completion_cmd import completion
 from .commands.encrypt_cmd import encrypt_cmd
 from .commands.decrypt_cmd import decrypt_cmd
-# from .commands.webhook_cmd import webhook
+from .commands.batch_cmd import batch_cmd
+from .commands.webhook_cmd import webhook
 # from .commands.server_cmd import server
 
 
@@ -87,6 +89,7 @@ cli.add_command(show)
 cli.add_command(kill)
 cli.add_command(resolve)
 cli.add_command(set_status, name="set-status")
+cli.add_command(set_severity, name="set-severity")
 cli.add_command(reopen)
 cli.add_command(set_title, name="set-title")
 cli.add_command(purge)
@@ -115,10 +118,11 @@ cli.add_command(encrypt_cmd, name="encrypt")
 cli.add_command(decrypt_cmd, name="decrypt")
 
 # webhook and server commands
-# cli.add_command(webhook)
+cli.add_command(webhook)
 # cli.add_command(server)
 
 cli.add_command(docs)
+cli.add_command(batch_cmd)
 
 # aliases
 cli.add_command(ls, name="ls")
