@@ -26,16 +26,16 @@ def issues_to_csv(issues, writer):
 
 def events_to_csv(events, writer):
     """Write events to CSV format."""
-    fieldnames = ["id", "issue_id", "message", "level", "timestamp", "source", "tags", "context"]
+    fieldnames = ["event_id", "issue_id", "message", "level", "timestamp", "source", "tags", "context"]
     writer.writeheader()
     for event in events:
         row = {
-            "id": event.get("id", ""),
+            "event_id": event.get("event_id", ""),
             "issue_id": event.get("issue_id", ""),
             "message": event.get("message", ""),
             "level": event.get("level", ""),
             "timestamp": event.get("timestamp", ""),
-            "source": event.get("source", ""),
+            "source": event.get("source", event.get("host", "")),
             "tags": ", ".join(event.get("tags", [])),
             "context": json.dumps(event.get("context", {})),
         }
@@ -71,7 +71,7 @@ def export(output, format):
         if not output:
             # Cannot output CSV to stdout with proper formatting, require output file
             console.print("[error]CSV format requires an output file. Use --output <filename>[/error]")
-            return
+            raise click.Abort()
         
         export_as_csv(issues, events, output)
         console.print(f"[success]Exported to[/success] [highlight]{output}[/highlight]")
