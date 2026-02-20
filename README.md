@@ -474,5 +474,94 @@ crashvault path
 crashvault init
 ```
 
+## Troubleshooting
+
+### Common Issues
+
+**"Permission denied" when accessing vault**
+```bash
+# Check vault directory permissions
+ls -la ~/.crashvault
+
+# Fix permissions if needed
+chmod 700 ~/.crashvault
+chmod 600 ~/.crashvault/*.json
+```
+
+**"Vault is encrypted" but you forgot the password**
+- There is no password recovery for encrypted vaults (by design for security)
+- If you have a backup, restore from that
+- Otherwise, you'll need to reset: `rm -rf ~/.crashvault && crashvault init`
+
+**Server won't start / port already in use**
+```bash
+# Check what's using the port
+lsof -i :5678
+
+# Use a different port
+crashvault server start --port 9000
+
+# Or kill the existing process
+crashvault server stop
+```
+
+**Webhooks not firing**
+```bash
+# Check webhook is enabled
+crashvault webhook list
+
+# Test the webhook manually
+crashvault webhook test <webhook-id>
+
+# Check logs for errors
+tail -f ~/.crashvault/logs/app.log
+```
+
+**Events not showing up after `crashvault add`**
+```bash
+# Verify the event was created
+crashvault list --status=all
+
+# Check for issues with the vault
+crashvault stats
+
+# Look at recent events
+crashvault tail
+```
+
+**Import fails with "invalid JSON"**
+- Ensure the file is valid JSON: `python -m json.tool backup.json`
+- Check the file encoding (should be UTF-8)
+- Try importing with `--mode=replace` if merge fails
+
+**Shell completion not working**
+```bash
+# Regenerate completion scripts
+crashvault completion bash > ~/.crashvault/completion.bash
+source ~/.crashvault/completion.bash
+
+# For zsh
+crashvault completion zsh > ~/.zshrc.d/crashvault.zsh
+```
+
+### Debug Mode
+
+Enable verbose logging for troubleshooting:
+```bash
+# Set log level via environment variable
+export CRASHVAULT_LOG_LEVEL=DEBUG
+crashvault <command>
+
+# View logs
+tail -f ~/.crashvault/logs/app.log
+```
+
+### Getting Help
+
+- Run `crashvault help` for command reference
+- Run `crashvault <command> --help` for command-specific help
+- Check logs at `~/.crashvault/logs/app.log`
+- File issues at the project repository
+
 ## Contributors
 Thanks to Creeperkid2014 / AgentArk5

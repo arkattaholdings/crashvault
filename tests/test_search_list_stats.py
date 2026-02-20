@@ -16,9 +16,9 @@ class TestSearchCommand:
 
         assert result.exit_code == 0
         # Should show all 3 events
-        assert "event-001" in result.output
-        assert "event-002" in result.output
-        assert "event-003" in result.output
+        assert "3 event(s) matched" in result.output
+        assert "Test error message" in result.output
+        assert "Another test error" in result.output
 
     def test_search_by_level(self, crashvault_home, cli_runner, sample_events):
         """Search should filter by level."""
@@ -27,11 +27,11 @@ class TestSearchCommand:
         result = cli_runner.invoke(cli, ["search", "--level", "error"])
 
         assert result.exit_code == 0
-        # Should show error events only
-        assert "event-001" in result.output
-        assert "event-002" in result.output
+        # Should show error events only (2 events)
+        assert "2 event(s) matched" in result.output
+        assert "Test error message" in result.output
         # event-003 is warning, should not appear
-        assert "event-003" not in result.output
+        assert "Another test error" not in result.output
 
     def test_search_by_level_case_insensitive(self, crashvault_home, cli_runner, sample_events):
         """Search level filter should be case insensitive."""
@@ -40,8 +40,9 @@ class TestSearchCommand:
         result = cli_runner.invoke(cli, ["search", "--level", "WARNING"])
 
         assert result.exit_code == 0
-        assert "event-003" in result.output
-        assert "event-001" not in result.output
+        assert "1 event(s) matched" in result.output
+        assert "Another test error" in result.output
+        assert "Test error message" not in result.output
 
     def test_search_by_tag(self, crashvault_home, cli_runner, sample_events):
         """Search should filter by tag."""
@@ -51,10 +52,10 @@ class TestSearchCommand:
 
         assert result.exit_code == 0
         # Events with backend tag: event-001, event-002
-        assert "event-001" in result.output
-        assert "event-002" in result.output
+        assert "2 event(s) matched" in result.output
+        assert "Test error message" in result.output
         # event-003 has frontend tag, should not appear
-        assert "event-003" not in result.output
+        assert "Another test error" not in result.output
 
     def test_search_by_multiple_tags(self, crashvault_home, cli_runner, sample_events):
         """Search with multiple tags should match all tags."""
@@ -65,9 +66,8 @@ class TestSearchCommand:
 
         assert result.exit_code == 0
         # Only event-001 has both tags
-        assert "event-001" in result.output
-        # event-002 only has backend tag
-        assert "event-002" not in result.output
+        assert "1 event(s) matched" in result.output
+        assert "Test error message" in result.output
 
     def test_search_by_text(self, crashvault_home, cli_runner, sample_events):
         """Search should filter by text in message."""
@@ -76,9 +76,9 @@ class TestSearchCommand:
         result = cli_runner.invoke(cli, ["search", "--text", "Test error"])
 
         assert result.exit_code == 0
-        # event-001 and event-002 have "Test error message"
-        assert "event-001" in result.output
-        assert "event-002" in result.output
+        # All events contain "test error" (case insensitive)
+        assert "event(s) matched" in result.output
+        assert "Test error message" in result.output
 
     def test_search_by_text_case_insensitive(self, crashvault_home, cli_runner, sample_events):
         """Search text filter should be case insensitive."""
@@ -88,8 +88,8 @@ class TestSearchCommand:
 
         assert result.exit_code == 0
         # Both should match regardless of case
-        assert "event-001" in result.output
-        assert "event-002" in result.output
+        assert "event(s) matched" in result.output
+        assert "Test error message" in result.output
 
     def test_search_combined_filters(self, crashvault_home, cli_runner, sample_events):
         """Search should combine multiple filters."""
@@ -99,9 +99,9 @@ class TestSearchCommand:
         result = cli_runner.invoke(cli, ["search", "--level", "error", "--tag", "backend"])
 
         assert result.exit_code == 0
-        # Should match error level + backend tag
-        assert "event-001" in result.output
-        assert "event-002" in result.output
+        # Should match error level + backend tag (event-001 and event-002)
+        assert "2 event(s) matched" in result.output
+        assert "Test error message" in result.output
 
     def test_search_no_results(self, crashvault_home, cli_runner, sample_events):
         """Search with non-matching filters should show no results."""

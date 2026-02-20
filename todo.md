@@ -5,7 +5,7 @@
 ### Phase 1: Polish Current Features
 - [ ] Smart deduplication — Group errors by stacktrace similarity
 - [ ] Rich TUI — Interactive terminal UI for browsing crashes
-- [ ] Batch operations — Bulk resolve, export, tag
+- [x] Batch operations — Bulk resolve, export, tag
 
 ### Phase 2: Differentiators (CrashVault Superpowers)
 - [x] Encrypted vaults — Password-protected local storage (unique!)
@@ -24,7 +24,7 @@
 - [ ] Sentry-compatible endpoint — Ingest from Sentry SDKs locally
 - [x] GitHub Issues auto-creation
 - [x] Slack/Discord/Teams webhooks
-- [ ] Jira ticket creation
+- [x] Jira ticket creation
 - [ ] CI/CD integration
 
 ### Phase 5: Multi-language SDKs (Match Sentry)
@@ -45,12 +45,12 @@
 ## Documentation
 - [ ] Write usage guide for batch analyze feature
 - [ ] Create webhook integration examples for more frameworks (Django, Express, Flask)
-- [ ] Add troubleshooting section to README
+- [x] Add troubleshooting section to README
 - [ ] Document CHANGES_SUMMARY.md format and usage
 
 ## Features
 - [x] Add filtering options to wrap_cmd.py (by exit code, specific tags)
-- [ ] Implement batch operations for issue management
+- [x] Implement batch operations for issue management
 - [ ] Add export/import for individual issues
 - [x] Add CSV export format support
 - [ ] Create interactive TUI for browsing issues
@@ -101,7 +101,7 @@
 - [ ] PagerDuty/OpsGenie alert integration
 - [ ] Grafana datasource plugin for crash dashboards
 - [ ] CI/CD pipeline integration (GitHub Actions, GitLab CI)
-- [ ] Jira ticket auto-creation from high-severity crashes
+- [x] Jira ticket auto-creation from high-severity crashes
 
 ## Analytics & Insights
 - [ ] Crash trend visualization (CLI sparklines or web dashboard)
