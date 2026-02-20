@@ -65,6 +65,95 @@ class TestExportCommand:
         assert data["exported_at"].endswith("Z")
 
 
+class TestExportCSVCommand:
+    """Tests for the CSV export format."""
+
+    def test_export_csv_to_stdout(self, crashvault_home, cli_runner, sample_issues, sample_events):
+        """Export should output CSV to stdout when format is csv."""
+        from crashvault.cli import cli
+
+        result = cli_runner.invoke(cli, ["export", "--format", "csv"])
+
+        assert result.exit_code == 0
+        # CSV should have header row
+        assert "type,id,fingerprint,title,status" in result.output
+        # Should contain data
+        assert "issue" in result.output
+        assert "event" in result.output
+
+    def test_export_csv_has_correct_headers(self, crashvault_home, cli_runner, sample_issues, sample_events):
+        """CSV export should have proper headers."""
+        from crashvault.cli import cli
+
+        result = cli_runner.invoke(cli, ["export", "--format", "csv"])
+        lines = result.output.strip().split("\n")
+        
+        header = lines[0]
+        assert "type" in header
+        assert "id" in header
+        assert "fingerprint" in header
+        assert "title" in header
+        assert "status" in header
+        assert "message" in header
+        assert "level" in header
+        assert "timestamp" in header
+        assert "tags" in header
+        assert "host" in header
+
+    def test_export_csv_to_file(self, crashvault_home, cli_runner, sample_issues, sample_events, tmp_path):
+        """CSV export should write to file when specified."""
+        from crashvault.cli import cli
+
+        output_file = tmp_path / "export.csv"
+        result = cli_runner.invoke(cli, ["export", "--format", "csv", "--output", str(output_file)])
+
+        assert result.exit_code == 0
+        assert output_file.exists()
+        content = output_file.read_text()
+        assert "type,id" in content
+
+    def test_export_csv_includes_issues(self, crashvault_home, cli_runner, sample_issues, sample_events):
+        """CSV export should include issue data."""
+        from crashvault.cli import cli
+
+        result = cli_runner.invoke(cli, ["export", "--format", "csv"])
+
+        # Should have issue rows
+        assert result.output.count("issue") >= 3  # 3 sample issues
+
+    def test_export_csv_includes_events(self, crashvault_home, cli_runner, sample_issues, sample_events):
+        """CSV export should include event data."""
+        from crashvault.cli import cli
+
+        result = cli_runner.invoke(cli, ["export", "--format", "csv"])
+
+        # Should have event rows
+        assert result.output.count("event") >= 3  # 3 sample events
+
+    def test_export_csv_empty_vault(self, crashvault_home, cli_runner):
+        """CSV export of empty vault should have header only."""
+        from crashvault.cli import cli
+
+        result = cli_runner.invoke(cli, ["export", "--format", "csv"])
+
+        assert result.exit_code == 0
+        # Should have header
+        assert "type,id" in result.output
+        # No data rows (only header)
+        lines = result.output.strip().split("\n")
+        assert len(lines) == 1  # Just the header
+
+    def test_export_csv_default_is_json(self, crashvault_home, cli_runner, sample_issues):
+        """Default format should still be JSON."""
+        from crashvault.cli import cli
+
+        result = cli_runner.invoke(cli, ["export"])
+
+        assert result.exit_code == 0
+        # Should be JSON, not CSV
+        assert result.output.startswith("{")
+
+
 class TestImportCommand:
     """Tests for the import command."""
 
